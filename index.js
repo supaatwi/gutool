@@ -1,5 +1,63 @@
 
 
+/**
+ * pad
+ * Ex. ([{x, y}, {x, y}]) => {x, y}
+ *
+ * 
+ * @param {Object[]} vertices - [{x, y}]
+ * @returns
+ */
+const calculateCentroid = (vertices) => {
+    let centroidX = 0;
+    let centroidY = 0;
+    let area = 0;
+
+    for (let i = 0; i < vertices.length; i++) {
+        let currentVertex = vertices[i];
+        let nextVertex = vertices[(i + 1) % vertices.length];
+
+        let crossProduct = (currentVertex.x * nextVertex.y) - (nextVertex.x * currentVertex.y);
+        area += crossProduct;
+
+        centroidX += (currentVertex.x + nextVertex.x) * crossProduct;
+        centroidY += (currentVertex.y + nextVertex.y) * crossProduct;
+    }
+
+    area /= 2;
+    centroidX /= (6 * area);
+    centroidY /= (6 * area);
+
+    return { x: centroidX, y: centroidY };
+}
+
+
+const sumBy = (arr = [], key) => {
+    let result = arr.reduce((init, cur) => {
+        return init + cur[key]
+    }, 0)
+
+    return result
+}
+
+const sum = (arr = []) => {
+    let result = arr.reduce((init, cur) => {
+        return init + cur
+    }, 0)
+
+    return result
+}
+
+const marge = (arr = []) => {
+    let result = arr.reduce((init, cur) => {
+        return [
+            ...init,
+            ...cur
+        ]
+    }, []) 
+    return result;
+
+}
 
 const margeBy = (arrObj = [], key) => {
     let temp = {};
@@ -20,5 +78,9 @@ const margeBy = (arrObj = [], key) => {
 }
 
 module.exports = {
-    margeBy
+    margeBy,
+    marge,
+    sum,
+    sumBy,
+    calculateCentroid
 }
